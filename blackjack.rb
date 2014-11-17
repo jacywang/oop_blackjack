@@ -159,7 +159,6 @@ class Game
 
   def play
     puts "----Welcome to Blackjack!----"
-    set_player_name
     deck.shuffle
     2.times do
       player.get_card(deck.hand_card)
