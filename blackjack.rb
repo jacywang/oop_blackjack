@@ -5,6 +5,9 @@ class Deck
 
   def initialize
     @deck = SUITS.product(CARDS)
+    [1, 2, 3].sample.times do 
+      deck << deck
+    end
   end
 
   def shuffle
@@ -17,6 +20,8 @@ class Deck
 end
 
 class Human
+  BLACKJACK_AMOUNT = 21
+
   attr_accessor :mycards
   attr_reader :name
 
@@ -45,14 +50,14 @@ class Human
     end
 
     arr.count("A").times do
-      total -= 10 if total > 21
+      total -= 10 if total > BLACKJACK_AMOUNT
     end
 
     total
   end
 
   def blackjack?
-    if calculate_total == 21
+    if calculate_total == BLACKJACK_AMOUNT
       puts "#{name} hit blackjack! #{name} won!"
       Game.new.play_again
     else
@@ -61,7 +66,7 @@ class Human
   end
 
   def busted?
-    if calculate_total > 21
+    if calculate_total > BLACKJACK_AMOUNT
       puts "#{name} busted and lost!"
       Game.new.play_again
     else
@@ -76,7 +81,7 @@ end
 
 class Player < Human
   def take_action(deck)
-    while calculate_total < 21
+    while calculate_total < BLACKJACK_AMOUNT
       puts "What would you like to do? 1) hit 2) stay"
       hit_or_stay = gets.chomp
 
@@ -102,12 +107,14 @@ class Player < Human
 end
 
 class Dealer < Human
+  DEALER_STAY_MIN = 17
+
   def display_cards_before_player_stay
     puts "#{name} has cards #{[["*", "*"], mycards[1]]}."
   end
 
   def take_action(deck)
-    while calculate_total < 17
+    while calculate_total < DEALER_STAY_MIN
       new_card = deck.hand_card
       puts "#{name} got a new card #{new_card}."
       get_card(new_card)
