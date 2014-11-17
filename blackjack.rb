@@ -2,10 +2,14 @@ require "pry"
 class Deck
   SUITS = ["D", "H", "S", "C"]
   CARDS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+  ONE_DECK = SUITS.product(CARDS)
   attr_accessor :deck
 
   def initialize
-    @deck = SUITS.product(CARDS)
+    @deck = []
+    [1, 2, 3].sample.times do 
+      @deck += ONE_DECK
+    end
   end
 
   def shuffle
@@ -14,6 +18,10 @@ class Deck
 
   def hand_card
     deck.pop
+  end
+
+  def size
+    deck.size
   end
 end
 
