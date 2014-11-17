@@ -1,3 +1,4 @@
+require "pry"
 class Deck
   SUITS = ["D", "H", "S", "C"]
   CARDS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -5,9 +6,6 @@ class Deck
 
   def initialize
     @deck = SUITS.product(CARDS)
-    [1, 2, 3].sample.times do 
-      deck << deck
-    end
   end
 
   def shuffle
@@ -22,8 +20,7 @@ end
 class Human
   BLACKJACK_AMOUNT = 21
 
-  attr_accessor :mycards
-  attr_reader :name
+  attr_accessor :name, :mycards
 
   def initialize(name)
     @name = name
@@ -130,8 +127,8 @@ class Game
 
   def initialize
     @deck = Deck.new
-    @player = Player.new("Jacy")
-    @dealer = Dealer.new("Lulu")
+    @player = Player.new("Player1")
+    @dealer = Dealer.new("Dealer")
   end
 
   def winner_is(player, dealer)
@@ -147,8 +144,14 @@ class Game
     end
   end
 
+  def set_player_name
+    puts "What's your name?"
+    player.name = gets.chomp
+  end
+
   def play
     puts "----Welcome to Blackjack!----"
+    set_player_name
     deck.shuffle
     2.times do
       player.get_card(deck.hand_card)
