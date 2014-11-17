@@ -25,15 +25,8 @@ class Deck
   end
 end
 
-class Human
+module Hand
   BLACKJACK_AMOUNT = 21
-
-  attr_accessor :name, :mycards
-
-  def initialize(name)
-    @name = name
-    @mycards = []
-  end
 
   def get_card(card)
     mycards << card
@@ -84,7 +77,15 @@ class Human
   end
 end
 
-class Player < Human
+class Player
+  include Hand
+  attr_accessor :name, :mycards
+
+  def initialize(n)
+    @name = n
+    @mycards = []
+  end
+
   def take_action(deck)
     while calculate_total < BLACKJACK_AMOUNT
       puts "What would you like to do? 1) hit 2) stay"
@@ -111,7 +112,15 @@ class Player < Human
   end
 end
 
-class Dealer < Human
+class Dealer
+  include Hand
+  attr_accessor :name, :mycards
+
+  def initialize
+    @name = "Dealer"
+    @mycards = []
+  end
+
   DEALER_STAY_MIN = 17
 
   def display_cards_before_player_stay
@@ -135,8 +144,8 @@ class Game
 
   def initialize
     @deck = Deck.new
-    @player = Player.new("Player1")
-    @dealer = Dealer.new("Dealer")
+    @player = Player.new("Jacy")
+    @dealer = Dealer.new
   end
 
   def winner_is(player, dealer)
